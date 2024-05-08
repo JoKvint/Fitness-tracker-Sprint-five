@@ -143,8 +143,13 @@ func (w Walking) Calories() float64 {
 	// Используем math.Pow для расчета средней скорости в квадрате
 	meanSpeedSquared := math.Pow(meanSpeedMps, 2)
 
+	// Проверяем, является ли Height равным нулю
+	if w.Height == 0 {
+		return 0
+	}
+
 	// Рассчитываем килокалории
-	calories := ((CaloriesWeightMultiplier*w.Weight + (meanSpeedSquared/w.Height)*CaloriesSpeedHeightMultiplier*w.Weight) * w.Duration.Hours() * MinInHours)
+	calories := ((CaloriesWeightMultiplier*w.Weight + (meanSpeedSquared/(w.Height*CmInM))*CaloriesSpeedHeightMultiplier*w.Weight) * w.Duration.Hours() * MinInHours)
 
 	return calories
 }
